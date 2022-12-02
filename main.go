@@ -36,10 +36,10 @@ func (p *Mysql) Handle(broken abstract.Broken) {
 	buffer := util.NewByteBuffer(broken.Payload, false)
 	for buffer.HasNext() {
 		length, _ := p.resolveOne(buffer)
-		if buffer.Len() < buffer.Position()+int64(length) {
+		if buffer.Len() < buffer.Position()+length {
 			return
 		}
-		onePayload := buffer.Read(int64(length))
+		onePayload := buffer.Read(length)
 		oneBuffer := util.NewByteBuffer(onePayload, false)
 
 		if strings.Index(p.BPFFilter, fmt.Sprintf("%d", broken.SrcPort)) != -1 {
